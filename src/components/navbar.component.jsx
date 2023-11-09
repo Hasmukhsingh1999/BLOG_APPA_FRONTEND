@@ -12,7 +12,7 @@ const Navbar = () => {
         <img src={LOGO} alt="" className="w-10 flex-none" />
       </Link>
       <div
-        className={`absolute bg-white w-full left-0 top-full border-b border-gray-100 py-4 px-[5vw] md:border-0 md:block md:relative md:inset-0 md:p-0 md:bg-transparent md:w-auto ${
+        className={`absolute bg-white w-full left-0 top-full border-b border-gray-100 py-4 px-[5vw] md:border-0 md:block md:relative md:inset-0 md:p-0 md:bg-transparent md:w-auto  md:opacity-100 pointer-events-auto duration-100 ${
           searchBoxVisibility
             ? "opacity-100 pointer-events-auto duration-100"
             : "opacity-0 pointer-events-none duration-100"
@@ -34,7 +34,7 @@ const Navbar = () => {
           className="md:hidden text-2xl w-12 h-12 rounded-full bg-gray-300 flex items-center justify-center"
           onClick={() => setSearchBoxVisibility((currentVal) => !currentVal)}
         >
-          <CiSearch className="text-xl" />
+          <CiSearch className="text-xl"/>
         </button>
       </div>
       {/* CLICK ON THE SEARCH BUTTON SEARCH WILL APPEAR */}

@@ -30,10 +30,12 @@ const UserAuthForm = ({ type }) => {
           <InputBox
             name={"password"}
             type="password"
-
             placeholder={"Password"}
             icon={<MdPassword className="input-icon" />}
           />
+          <button className="btn-dark center mt-14">
+            {type.replace("-", " ")}
+          </button>
         </form>
       </section>
     </div>

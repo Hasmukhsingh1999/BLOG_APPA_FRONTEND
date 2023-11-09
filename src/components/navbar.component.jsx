@@ -18,9 +18,10 @@ const Navbar = () => {
         />
         <CiSearch className="absolute right-[10%] md:pointer-events-none md:left-5 top-1/2 -translate-y-1/2 text-xl text-gray-600" />
       </div>
+      {/* CLICK ON THE SEARCH BUTTON SEARCH WILL APPEAR */}
       <div className="flex items-center gap-3 md:gap-6 ml-auto">
-        <button>
-          <CiSearch className="absolute right-[10%] md:pointer-events-none md:left-5 top-1/2 -translate-y-1/2 text-xl text-gray-600" />
+        <button className="md:hidden text-2xl w-12 h-12 rounded-full bg-gray-300 flex items-center justify-center">
+          <CiSearch className="text-xl"/>
         </button>
       </div>
     </nav>

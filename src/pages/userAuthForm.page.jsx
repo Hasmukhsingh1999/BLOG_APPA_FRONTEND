@@ -4,10 +4,11 @@ import { MdOutlineAlternateEmail, MdPassword } from "react-icons/md";
 
 import google from "../imgs/google.png";
 import { Link } from "react-router-dom";
+import AnimationWrapper from "../common/page-animation";
 
 const UserAuthForm = ({ type }) => {
   return (
-    <div>
+    <AnimationWrapper keyValue={type}>
       <section className="h-cover flex items-center justify-center">
         <form className="w-[80%] max-w-[400px]">
           <h1 className="text-4xl font-gelasio capitalize text-center mb-24">
@@ -71,7 +72,7 @@ const UserAuthForm = ({ type }) => {
           )}
         </form>
       </section>
-    </div>
+    </AnimationWrapper>
   );
 };
 

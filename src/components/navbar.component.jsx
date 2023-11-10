@@ -4,6 +4,7 @@ import { CiSearch, CiEdit } from "react-icons/ci";
 import { useContext, useState } from "react";
 import { UserContext } from "../App";
 import {FaBell} from 'react-icons/fa'
+import UserNavigationPanel from "./user-navigation.component";
 
 const Navbar = () => {
   const [searchBoxVisibility, setSearchBoxVisibility] = useState(false);
@@ -60,6 +61,13 @@ const Navbar = () => {
               <FaBell/>
             </button>
            </Link>
+           <div className="relative">
+            <button className="w-12 h-12 mt-1">
+              <img src={profileImg} alt="profile" className="w-full h-full object-cover rounded-full"/>
+            </button>
+
+            <UserNavigationPanel/>
+           </div>
            </>
           ) : (
             <>

@@ -11,7 +11,11 @@ import axios from "axios";
 import { Toaster, toast } from "react-hot-toast";
 
 const UserAuthForm = ({ type }) => {
+
   const authForm = useRef();
+
+
+
   const userAuthThroughServer = (serverRoute, formData) => {
     axios
       .post(import.meta.env.VITE_SERVER_DOMAIN + serverRoute, formData)
@@ -29,7 +33,7 @@ const UserAuthForm = ({ type }) => {
     let serverRoute = type === "sign-in" ? "/signin" : "/signup";
 
     // formData ->
-    let form = new FormData(authForm.current);
+    let form = new FormData(formElement);
     let formData = {};
     for (let [key, value] of form.entries()) {
       formData[key] = value;
@@ -66,7 +70,7 @@ const UserAuthForm = ({ type }) => {
     <AnimationWrapper keyValue={type}>
       <section className="h-cover flex items-center justify-center">
         <Toaster />
-        <form className="w-[80%] max-w-[400px]" ref={authForm}>
+        <form className="w-[80%] max-w-[400px]" id="formElement">
           <h1 className="text-4xl font-gelasio capitalize text-center mb-24">
             {type === "sign-in" ? "Welcome Back" : "Join us today!"}
           </h1>

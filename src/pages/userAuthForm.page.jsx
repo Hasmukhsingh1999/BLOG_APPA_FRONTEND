@@ -7,6 +7,8 @@ import { Link } from "react-router-dom";
 import AnimationWrapper from "../common/page-animation";
 import { useRef } from "react";
 
+
+
 const UserAuthForm = ({ type }) => {
   const authForm = useRef();
 

@@ -1,10 +1,17 @@
 import LOGO from "../imgs/logo.png";
 import { Link, Outlet } from "react-router-dom";
 import { CiSearch, CiEdit } from "react-icons/ci";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { UserContext } from "../App";
+import {FaBell} from 'react-icons/fa'
 
 const Navbar = () => {
   const [searchBoxVisibility, setSearchBoxVisibility] = useState(false);
+
+  const {
+    userAuth,
+    userAuth: { access_token, profileImg },
+  } = useContext(UserContext);
 
   return (
     <>
@@ -45,12 +52,25 @@ const Navbar = () => {
             <CiEdit className="text-xl" />
             <p>Write</p>
           </Link>
-          <Link to={"/signin"} className="btn-dark py-2">
-            Sign In
-          </Link>
-          <Link to={"/signup"} className="btn-light py-2 hidden md:block">
-            Sign Up
-          </Link>
+
+          {access_token ? (
+           <>
+           <Link to={"/dashboard/notification"}>
+            <button className="w-12 h-12 rounded-full bg-grey relative hover:bg-black/10 flex items-center justify-center">
+              <FaBell/>
+            </button>
+           </Link>
+           </>
+          ) : (
+            <>
+              <Link to={"/signin"} className="btn-dark py-2">
+                Sign In
+              </Link>
+              <Link to={"/signup"} className="btn-light py-2 hidden md:block">
+                Sign Up
+              </Link>
+            </>
+          )}
         </div>
       </nav>
       <Outlet />

@@ -6,21 +6,27 @@ import google from "../imgs/google.png";
 import { Link } from "react-router-dom";
 import AnimationWrapper from "../common/page-animation";
 import { useRef } from "react";
+import axios from "axios";
 
 import { Toaster, toast } from "react-hot-toast";
 
 const UserAuthForm = ({ type }) => {
   const authForm = useRef();
-  const  userAuthThroughServer = (serverRoute,formData)=>{
-    
-
-  }
+  const userAuthThroughServer = (serverRoute, formData) => {
+    axios
+      .post(import.meta.env.VITE_SERVER_DOMAIN + serverRoute, formData)
+      .then(({ data }) => {
+        console.log(data);
+      })
+      .catch(({ response }) => {
+        toast.error(response.data.error);
+      });
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-
-    let serverRoute = type === 'sign-in' ? "/signin" :"/signup";
+    let serverRoute = type === "sign-in" ? "/signin" : "/signup";
 
     // formData ->
     let form = new FormData(authForm.current);
@@ -53,9 +59,7 @@ const UserAuthForm = ({ type }) => {
       return toast.error("Password is invalid");
     }
 
-
-    userAuthThroughServer(serverRoute,formData);
-
+    userAuthThroughServer(serverRoute, formData);
   };
 
   return (

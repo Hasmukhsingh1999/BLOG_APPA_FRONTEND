@@ -12,6 +12,11 @@ const UserAuthForm = ({ type }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    // formData ->
+    let form = new FormData(authForm.current);
+    console.log(form)
+
   };
 
   return (

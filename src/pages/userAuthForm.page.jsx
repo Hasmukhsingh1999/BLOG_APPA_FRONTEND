@@ -12,17 +12,46 @@ const UserAuthForm = ({ type }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-  
+
     // formData ->
     let form = new FormData(authForm.current);
-    console.log(form);
-  };
+    let formData = {};
+    for (let [key, value] of form.entries()) {
+      formData[key] = value;
+    }
+    console.log(formData);
+    // FORM VALIDATION
+
+    let emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/; // regex for email
+    let passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/; // regex for password
+
+    let { fullname, email, password } = formData;
+
+    if(fullname){
+      if (fullname.length < 3) {
+        return console.log({
+          error: "Fullname must be at least 3 letters long!",
+        });
+      }
   
+    }
+    if (!email.length) {
+      return console.log({ error: "Enter Email" });
+    }
+
+    if (!emailRegex.test(email)) {
+      return console.log({ error: "Email is invalid" });
+    }
+
+    if (!passwordRegex.test(password)) {
+      return console.log({ error: "Password is invalid" });
+    }
+  };
 
   return (
     <AnimationWrapper keyValue={type}>
       <section className="h-cover flex items-center justify-center">
-        <form className="w-[80%] max-w-[400px]" ref={authForm} >
+        <form className="w-[80%] max-w-[400px]" ref={authForm}>
           <h1 className="text-4xl font-gelasio capitalize text-center mb-24">
             {type === "sign-in" ? "Welcome Back" : "Join us today!"}
           </h1>

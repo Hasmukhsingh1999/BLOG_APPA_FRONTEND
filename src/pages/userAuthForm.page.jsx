@@ -7,13 +7,20 @@ import { Link } from "react-router-dom";
 import AnimationWrapper from "../common/page-animation";
 import { useRef } from "react";
 
-
+import { Toaster, toast } from "react-hot-toast";
 
 const UserAuthForm = ({ type }) => {
   const authForm = useRef();
+  const  userAuthThroughServer = (serverRoute,formData)=>{
+    
+
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+
+    let serverRoute = type === 'sign-in' ? "/signin" :"/signup";
 
     // formData ->
     let form = new FormData(authForm.current);
@@ -29,30 +36,32 @@ const UserAuthForm = ({ type }) => {
 
     let { fullname, email, password } = formData;
 
-    if(fullname){
+    if (fullname) {
       if (fullname.length < 3) {
-        return console.log({
-          error: "Fullname must be at least 3 letters long!",
-        });
+        return toast.error("Fullname must be at least 3 letters long!");
       }
-  
     }
     if (!email.length) {
-      return console.log({ error: "Enter Email" });
+      return toast.error("Enter Email");
     }
 
     if (!emailRegex.test(email)) {
-      return console.log({ error: "Email is invalid" });
+      return toast.error("Email is invalid");
     }
 
     if (!passwordRegex.test(password)) {
-      return console.log({ error: "Password is invalid" });
+      return toast.error("Password is invalid");
     }
+
+
+    userAuthThroughServer(serverRoute,formData);
+
   };
 
   return (
     <AnimationWrapper keyValue={type}>
       <section className="h-cover flex items-center justify-center">
+        <Toaster />
         <form className="w-[80%] max-w-[400px]" ref={authForm}>
           <h1 className="text-4xl font-gelasio capitalize text-center mb-24">
             {type === "sign-in" ? "Welcome Back" : "Join us today!"}

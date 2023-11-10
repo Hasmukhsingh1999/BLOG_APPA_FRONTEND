@@ -12,17 +12,17 @@ const UserAuthForm = ({ type }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
+  
     // formData ->
     let form = new FormData(authForm.current);
-    console.log(form)
-
+    console.log(form);
   };
+  
 
   return (
     <AnimationWrapper keyValue={type}>
       <section className="h-cover flex items-center justify-center">
-        <form className="w-[80%] max-w-[400px]" ref={authForm}>
+        <form className="w-[80%] max-w-[400px]" ref={authForm} >
           <h1 className="text-4xl font-gelasio capitalize text-center mb-24">
             {type === "sign-in" ? "Welcome Back" : "Join us today!"}
           </h1>
@@ -63,7 +63,7 @@ const UserAuthForm = ({ type }) => {
           </button>
           {type === "sign-in" ? (
             <p className="mt-6 text-gray-800 text-xl text-center">
-              Don't have an account
+              Dont have an account
               <Link
                 to={`/signup`}
                 className="underline text-black text-xl ml-1"

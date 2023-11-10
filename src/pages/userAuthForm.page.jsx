@@ -5,12 +5,19 @@ import { MdOutlineAlternateEmail, MdPassword } from "react-icons/md";
 import google from "../imgs/google.png";
 import { Link } from "react-router-dom";
 import AnimationWrapper from "../common/page-animation";
+import { useRef } from "react";
 
 const UserAuthForm = ({ type }) => {
+  const authForm = useRef();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  };
+
   return (
     <AnimationWrapper keyValue={type}>
       <section className="h-cover flex items-center justify-center">
-        <form className="w-[80%] max-w-[400px]">
+        <form className="w-[80%] max-w-[400px]" ref={authForm}>
           <h1 className="text-4xl font-gelasio capitalize text-center mb-24">
             {type === "sign-in" ? "Welcome Back" : "Join us today!"}
           </h1>
@@ -37,7 +44,7 @@ const UserAuthForm = ({ type }) => {
             placeholder={"Password"}
             icon={<MdPassword className="input-icon" />}
           />
-          <button className="btn-dark center mt-14">
+          <button className="btn-dark center mt-14" onClick={handleSubmit}>
             {type.replace("-", " ")}
           </button>
           <div className="relative w-full items-center flex gap-2 mt-10 opacity-10 uppercase text-black font-bold">

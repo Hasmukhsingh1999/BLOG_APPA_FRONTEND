@@ -69,7 +69,7 @@ const BlogEditorComponent = () => {
           <img src={LOGO} className="w-10 flex-none" />
         </Link>
         <p className="max-md:hidden text-black line-clamp-1 w-full">
-          {title.length ? title : "New Blog"}
+          { title ?? "New Blog"}
         </p>
         <div className="flex gap-4 ml-auto ">
           <button className="btn-dark py-2">Publish</button>
@@ -83,7 +83,7 @@ const BlogEditorComponent = () => {
             <div className="realative aspect-video hover:opacity-80 bg-white border-4 border-grey">
               <form>
                 <label htmlFor="uploadBanner">
-                  <img src={bannerUrl || blog} alt="banner" className="z-20" />
+                  <img src={banner || blog} alt="banner" className="z-20" />
                   <input
                     id="uploadBanner"
                     type="file"

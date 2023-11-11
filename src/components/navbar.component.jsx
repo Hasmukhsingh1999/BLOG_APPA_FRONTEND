@@ -65,8 +65,7 @@ const Navbar = () => {
             <button className="w-12 h-12 mt-1">
               <img src={profileImg} alt="profile" className="w-full h-full object-cover rounded-full"/>
             </button>
-
-            <UserNavigationPanel/>
+          <UserNavigationPanel/>
            </div>
            </>
           ) : (

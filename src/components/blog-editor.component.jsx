@@ -4,6 +4,7 @@ import AnimationWrapper from "../common/page-animation";
 import toast, { Toaster } from "react-hot-toast";
 import { useState } from "react";
 import axios from "axios";
+import blog from "../imgs/banner.jpg";
 
 const BlogEditorComponent = () => {
   const [bannerUrl, setBannerUrl] = useState("");
@@ -27,7 +28,7 @@ const BlogEditorComponent = () => {
         );
         toast.dismiss(loadingToast);
         toast.success("Uploaded");
-        console.log(response.data); 
+        console.log(response.data);
 
         const imageUrl = URL.createObjectURL(file);
         setBannerUrl(imageUrl);
@@ -37,6 +38,18 @@ const BlogEditorComponent = () => {
     }
   };
 
+  const handleTitleKeyDown = (e) => {
+    if (e.keyCode === 13) {
+      e.preventDefault();
+    }
+  };
+
+  const handleTitleChange = (e) => {
+    let input = e.target;
+    input.style.height = "auto";
+    input.style.height = input.scrollHeight + "px";
+  };
+  
   return (
     <>
       <nav className="navbar">
@@ -52,18 +65,11 @@ const BlogEditorComponent = () => {
       <Toaster />
       <AnimationWrapper>
         <section>
-          <div className="mx-auto max-w-[900px] w-full">
+          <div className="mx-auto max-w-[900px]  h-[20vh] w-full">
             <div className="realative aspect-video hover:opacity-80 bg-white border-4 border-grey">
               <form>
                 <label htmlFor="uploadBanner">
-                  <img
-                    src={
-                      bannerUrl ||
-                      "https://images.unsplash.com/photo-1682695797873-aa4cb6edd613?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                    }
-                    alt="banner"
-                    className="z-20"
-                  />
+                  <img src={bannerUrl || blog} alt="banner" className="z-20" />
                   <input
                     id="uploadBanner"
                     type="file"
@@ -74,6 +80,12 @@ const BlogEditorComponent = () => {
                 </label>
               </form>
             </div>
+            <textarea
+              placeholder="Blog Title"
+              className="text-4xl font-medium w-full h-20 outline-none resize-none mt-10 leading-tight placeholder:opacity-40"
+              onKeyDown={handleTitleKeyDown}
+              onChange={handleTitleChange}
+            ></textarea>
           </div>
         </section>
       </AnimationWrapper>

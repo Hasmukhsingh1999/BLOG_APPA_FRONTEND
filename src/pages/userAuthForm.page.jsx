@@ -13,23 +13,29 @@ import { storeInSession } from "../common/session";
 import { UserContext } from "../App";
 
 const UserAuthForm = ({ type }) => {
-  const authForm = useRef();
+  // const authForm = useRef();
   let {
     userAuth: { access_token },
     setUserAuth,
   } = useContext(UserContext);
 
   console.log(access_token);
+  
   const userAuthThroughServer = (serverRoute, formData) => {
     axios
-      .post(import.meta.env.VITE_SERVER_DOMAIN + serverRoute, formData)
-      .then(({ data }) => {
-        storeInSession("user", JSON.stringify(data));
-        setUserAuth(data);
-      })
-      .catch(({ response }) => {
-        toast.error(response.data.error);
-      });
+    .post(import.meta.env.VITE_SERVER_DOMAIN + serverRoute, formData)
+    .then(({ data }) => {
+      storeInSession("user", JSON.stringify(data));
+      setUserAuth(data);
+    })
+    .catch((error) => {
+      if (error.response && error.response.data && error.response.data.error) {
+        toast.error(error.response.data.error);
+      } else {
+        toast.error("An error occurred");
+      }
+    });
+  
   };
 
   const handleSubmit = (e) => {
@@ -70,6 +76,8 @@ const UserAuthForm = ({ type }) => {
 
     userAuthThroughServer(serverRoute, formData);
   };
+
+ 
 
   return access_token ? (
     <Navigate to="/" />
@@ -112,7 +120,10 @@ const UserAuthForm = ({ type }) => {
             <p>or</p>
             <hr className="w-1/2 border-black" />
           </div>
-          <button className="btn-dark flex items-center justify-center gap-4 w-[90%] center">
+          <button
+            className="btn-dark flex items-center justify-center gap-4 w-[90%] center"
+           
+          >
             <img src={google} alt="" className="w-5" />
             conitune with google
           </button>

@@ -3,22 +3,27 @@ import { Link, Outlet } from "react-router-dom";
 import { CiSearch, CiEdit } from "react-icons/ci";
 import { useContext, useState } from "react";
 import { UserContext } from "../App";
-import {FaBell} from 'react-icons/fa'
+import { FaBell } from "react-icons/fa";
 import UserNavigationPanel from "./user-navigation.component";
 
 const Navbar = () => {
   const [searchBoxVisibility, setSearchBoxVisibility] = useState(false);
 
-  const [userNavPanel,setUserNavPanel] = useState(false);
+  const [userNavPanel, setUserNavPanel] = useState(false);
 
   const {
     userAuth,
     userAuth: { access_token, profileImg },
   } = useContext(UserContext);
 
-  const handleUserNavPanel = ()=>{
-    setUserNavPanel(currentVal=>!currentVal);
-  }
+  const handleUserNavPanel = () => {
+    setUserNavPanel((currentVal) => !currentVal);
+  };
+  const handleBlur = () => {
+    setTimeout(() => {
+      setUserNavPanel(false);
+    }, 200);
+  };
 
   return (
     <>
@@ -61,21 +66,28 @@ const Navbar = () => {
           </Link>
 
           {access_token ? (
-           <>
-           <Link to={"/dashboard/notification"}>
-            <button className="w-12 h-12 rounded-full bg-grey relative hover:bg-black/10 flex items-center justify-center">
-              <FaBell/>
-            </button>
-           </Link>
-           <div className="relative" onClick={handleUserNavPanel}>
-            <button className="w-12 h-12 mt-1">
-              <img src={profileImg} alt="profile" className="w-full h-full object-cover rounded-full"/>
-            </button>
+            <>
+              <Link to={"/dashboard/notification"}>
+                <button className="w-12 h-12 rounded-full bg-grey relative hover:bg-black/10 flex items-center justify-center">
+                  <FaBell />
+                </button>
+              </Link>
+              <div
+                className="relative"
+                onClick={handleUserNavPanel}
+                onBlur={handleBlur}
+              >
+                <button className="w-12 h-12 mt-1">
+                  <img
+                    src={profileImg}
+                    alt="profile"
+                    className="w-full h-full object-cover rounded-full"
+                  />
+                </button>
 
-            {userNavPanel ? <UserNavigationPanel/>:""}
-          
-           </div>
-           </>
+                {userNavPanel ? <UserNavigationPanel /> : ""}
+              </div>
+            </>
           ) : (
             <>
               <Link to={"/signin"} className="btn-dark py-2">

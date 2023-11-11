@@ -6,6 +6,8 @@ import { useContext, useDebugValue, useEffect, useState } from "react";
 import axios from "axios";
 import blogImg from "../imgs/banner.jpg";
 import { EditorContext } from "../pages/editor.page";
+import {edi}
+
 
 const BlogEditorComponent = () => {
   const [bannerUrl, setBannerUrl] = useState("");

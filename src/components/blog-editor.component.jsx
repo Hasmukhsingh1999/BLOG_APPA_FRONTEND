@@ -1,9 +1,8 @@
 import { Link } from "react-router-dom";
 import LOGO from "../imgs/logo.png";
 import AnimationWrapper from "../common/page-animation";
-
+import toast, { Toaster } from "react-hot-toast";
 import { useState } from "react";
-
 import axios from "axios";
 
 const BlogEditorComponent = () => {
@@ -16,7 +15,7 @@ const BlogEditorComponent = () => {
       try {
         const formData = new FormData();
         formData.append("file", file);
-
+        let loadingToast = toast.loading("Uploading...");
         const response = await axios.post(
           `${import.meta.env.VITE_SERVER_DOMAIN}/api/upload`,
           formData,
@@ -26,7 +25,9 @@ const BlogEditorComponent = () => {
             },
           }
         );
-        console.log(response.data); // You can handle the response from the server as needed
+        toast.dismiss(loadingToast);
+        toast.success("Uploaded");
+        console.log(response.data); 
 
         const imageUrl = URL.createObjectURL(file);
         setBannerUrl(imageUrl);
@@ -48,6 +49,7 @@ const BlogEditorComponent = () => {
           <button className="btn-light py-2">Save Draft</button>
         </div>
       </nav>
+      <Toaster />
       <AnimationWrapper>
         <section>
           <div className="mx-auto max-w-[900px] w-full">

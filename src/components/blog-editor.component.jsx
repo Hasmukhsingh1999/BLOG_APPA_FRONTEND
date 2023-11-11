@@ -6,7 +6,7 @@ import { useContext, useDebugValue, useEffect, useState } from "react";
 import axios from "axios";
 import blogImg from "../imgs/banner.jpg";
 import { EditorContext } from "../pages/editor.page";
-import {edi}
+import EditorJS from '@editorjs/editorjs'
 
 
 const BlogEditorComponent = () => {
@@ -19,7 +19,11 @@ const BlogEditorComponent = () => {
   } = useContext(EditorContext);
 
   useEffect(() => {
-    // let editor = new Edi
+    let editor = new EditorJS({
+      holderId:"textEditor",
+      data:"",
+      placeholder:"Embark on a captivating journey through our tale of wonder and intrigue."
+    })
   }, []);
   const handleBannerUpload = async (event) => {
     const file = event.target.files[0];

@@ -2,16 +2,22 @@ import { Link } from "react-router-dom";
 import LOGO from "../imgs/logo.png";
 import AnimationWrapper from "../common/page-animation";
 import toast, { Toaster } from "react-hot-toast";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import axios from "axios";
 import blog from "../imgs/banner.jpg";
+import { EditorContext } from "../pages/editor.page";
 
 const BlogEditorComponent = () => {
   const [bannerUrl, setBannerUrl] = useState("");
 
+  let {
+    blog: { title, banner, content, tags, des },
+    setBlog,
+  } = useContext(EditorContext);
+
   const handleBannerUpload = async (event) => {
     const file = event.target.files[0];
-
+  
     if (file) {
       try {
         const formData = new FormData();
@@ -29,14 +35,17 @@ const BlogEditorComponent = () => {
         toast.dismiss(loadingToast);
         toast.success("Uploaded");
         console.log(response.data);
-
+  
         const imageUrl = URL.createObjectURL(file);
-        setBannerUrl(imageUrl);
+        
+        // Set the banner property of the blog object to the imageUrl
+        setBlog({ ...blog, banner: imageUrl });
       } catch (error) {
         console.error("Error uploading file:", error);
       }
     }
   };
+  
 
   const handleTitleKeyDown = (e) => {
     if (e.keyCode === 13) {
@@ -48,15 +57,20 @@ const BlogEditorComponent = () => {
     let input = e.target;
     input.style.height = "auto";
     input.style.height = input.scrollHeight + "px";
+
+ 
+    setBlog({ ...blog, title: input.value });
   };
-  
+
   return (
     <>
       <nav className="navbar">
         <Link to="/">
           <img src={LOGO} className="w-10 flex-none" />
         </Link>
-        <p className="max-md:hidden text-black line-clamp-1 w-full">New Blog</p>
+        <p className="max-md:hidden text-black line-clamp-1 w-full">
+          {title.length ? title : "New Blog"}
+        </p>
         <div className="flex gap-4 ml-auto ">
           <button className="btn-dark py-2">Publish</button>
           <button className="btn-light py-2">Save Draft</button>

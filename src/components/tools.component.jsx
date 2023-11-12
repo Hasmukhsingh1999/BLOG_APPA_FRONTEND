@@ -11,12 +11,19 @@ import InlineCode from "@editorjs/inline-code";
 export const tools = {
   embed: Embed,
   list: {
-    class:List,
-    inlineToolbar:true,
+    class: List,
+    inlineToolbar: true,
   },
   quote: Quote,
   marker: Marker,
   inlineCode: InlineCode,
   image: Image,
-  header: Header,
+  header: {
+    class: Header,
+    config: {
+      placeholder: "Type Heading....",
+      levels: [2, 3],
+      default:2,
+    },
+  },
 };

@@ -10,7 +10,10 @@ import InlineCode from "@editorjs/inline-code";
 
 export const tools = {
   embed: Embed,
-  list: List,
+  list: {
+    class:List,
+    inlineToolbar:true,
+  },
   quote: Quote,
   marker: Marker,
   inlineCode: InlineCode,

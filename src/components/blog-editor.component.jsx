@@ -7,7 +7,7 @@ import axios from "axios";
 import blogImg from "../imgs/banner.jpg";
 import { EditorContext } from "../pages/editor.page";
 import EditorJS from '@editorjs/editorjs'
-
+import { tools } from "./tools.component";
 
 const BlogEditorComponent = () => {
   const [bannerUrl, setBannerUrl] = useState("");
@@ -22,7 +22,7 @@ const BlogEditorComponent = () => {
     let editor = new EditorJS({
       holderId:"textEditor",
       data:"",
-      tools:"",
+      tools:tools,
       placeholder:"Embark on a captivating journey through our tale of wonder and intrigue."
     })
   }, []);

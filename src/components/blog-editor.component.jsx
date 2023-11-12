@@ -22,6 +22,7 @@ const BlogEditorComponent = () => {
     let editor = new EditorJS({
       holderId:"textEditor",
       data:"",
+      tools:"",
       placeholder:"Embark on a captivating journey through our tale of wonder and intrigue."
     })
   }, []);

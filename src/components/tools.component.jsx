@@ -1,5 +1,4 @@
-//importing tools
-
+import axios from 'axios';
 import Embed from "@editorjs/embed";
 import List from "@editorjs/list";
 import Image from "@editorjs/image";
@@ -9,29 +8,34 @@ import Marker from "@editorjs/marker";
 import InlineCode from "@editorjs/inline-code";
 
 const uploadImageByURL = async (url) => {
-    console.log('Attempting to upload image from URL:', url);
-  
-    try {
-        const response = await fetch(url);
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        const blob = await response.blob();
-        const file = new File([blob], "image.jpg", { type: "image/jpeg" });
-        console.log('Image successfully uploaded:', file);
-        return {
-            success: 1,
-            file: { url: URL.createObjectURL(file) },
-        };
-    } catch (error) {
-        console.error('Error uploading image:', error);
-        return {
-            success: 0,
-            file: { url: '' }, // Set a placeholder URL or handle the error accordingly
-        };
-    }
-  };
-  
+  console.log('Attempting to upload image from URL:', url);
+
+  try {
+    const response = await axios.post(
+      'http://localhost:3000/api/upload', // Replace with your server endpoint
+      { url },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+
+    console.log('Image successfully uploaded:', response.data);
+
+    return {
+      success: 1,
+      file: { url: response.data.imageUrl }, // Adjust the response structure based on your server's API
+    };
+  } catch (error) {
+    console.error('Error uploading image:', error);
+
+    return {
+      success: 0,
+      file: { url: '' }, // Set a placeholder URL or handle the error accordingly
+    };
+  }
+};
 
 export const tools = {
   embed: Embed,
@@ -53,7 +57,6 @@ export const tools = {
       },
     },
   },
-
   header: {
     class: Header,
     config: {

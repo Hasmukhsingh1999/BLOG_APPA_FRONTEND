@@ -20,26 +20,11 @@ const BlogEditorComponent = () => {
 
   useEffect(() => {
     let editor = new EditorJS({
-      holder: "textEditor", // Use 'holder' instead of 'holderId'
-      data: "",
-      tools: tools,
-      placeholder: "Embark on a captivating journey through our tale of wonder and intrigue.",
-      // Use the 'on' property to set up hooks
-      on: {
-        // Replace 'appendCallback' with 'rendered'
-        rendered: () => {
-          console.log("Editor is rendered");
-        },
-      },
+      holderId:"textEditor",
+      data:"",
+      tools:tools,
+      placeholder:"Embark on a captivating journey through our tale of wonder and intrigue."
     })
-    setEditor(editor);
-
-    return () => {
-      // Clean up the editor instance when the component unmounts
-      if (editorInstance) {
-        editorInstance.destroy();
-      }
-    };
   }, []);
   const handleBannerUpload = async (event) => {
     const file = event.target.files[0];

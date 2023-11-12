@@ -8,17 +8,28 @@ import Quote from "@editorjs/quote";
 import Marker from "@editorjs/marker";
 import InlineCode from "@editorjs/inline-code";
 
-const uploadImageByURL = (url) => {
-    return new Promise((resolve, reject) => {
-      try {
-        resolve({
-          success: 1,
-          file: { url },
-        });
-      } catch (error) {
-        reject(error);
-      }
-    });
+const uploadImageByURL = async (url) => {
+    console.log('Attempting to upload image from URL:', url);
+  
+    try {
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const blob = await response.blob();
+        const file = new File([blob], "image.jpg", { type: "image/jpeg" });
+        console.log('Image successfully uploaded:', file);
+        return {
+            success: 1,
+            file: { url: URL.createObjectURL(file) },
+        };
+    } catch (error) {
+        console.error('Error uploading image:', error);
+        return {
+            success: 0,
+            file: { url: '' }, // Set a placeholder URL or handle the error accordingly
+        };
+    }
   };
   
 
@@ -42,7 +53,7 @@ export const tools = {
       },
     },
   },
-  
+
   header: {
     class: Header,
     config: {

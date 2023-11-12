@@ -8,22 +8,47 @@ import Quote from "@editorjs/quote";
 import Marker from "@editorjs/marker";
 import InlineCode from "@editorjs/inline-code";
 
+const uploadImageByURL = (url) => {
+    return new Promise((resolve, reject) => {
+      try {
+        resolve({
+          success: 1,
+          file: { url },
+        });
+      } catch (error) {
+        reject(error);
+      }
+    });
+  };
+  
+
 export const tools = {
   embed: Embed,
   list: {
     class: List,
     inlineToolbar: true,
   },
-  quote: Quote,
+  quote: {
+    class: Quote,
+    inlineToolbar: true,
+  },
   marker: Marker,
   inlineCode: InlineCode,
-  image: Image,
+  image: {
+    class: Image,
+    config: {
+      uploader: {
+        uploadByUrl: uploadImageByURL,
+      },
+    },
+  },
+  
   header: {
     class: Header,
     config: {
       placeholder: "Type Heading....",
       levels: [2, 3],
-      default:2,
+      default: 2,
     },
   },
 };

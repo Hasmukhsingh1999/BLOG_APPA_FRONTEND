@@ -1,7 +1,10 @@
+import AnimationWrapper from "../common/page-animation"
 
 const PublishForm = () => {
   return (
-    <div>PublishForm</div>
+    <AnimationWrapper>
+      
+    </AnimationWrapper>
   )
 }
 

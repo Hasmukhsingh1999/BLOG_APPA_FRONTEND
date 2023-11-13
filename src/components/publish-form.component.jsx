@@ -8,6 +8,7 @@ import Tag from "./tags.component";
 
 const PublishForm = () => {
   const characterLimit = 200;
+  let tagLimit = 10;
   let {
     setEditorState,
     blog: { banner, title, tags, des },
@@ -33,10 +34,25 @@ const PublishForm = () => {
       e.preventDefault();
     }
   };
+  const handleKeyDown = (e) => {
+   
+    if (e.keyCode === 13 || e.keyCode === 188) {
+      e.preventDefault();
+      let tag = e.target.value;
+      if (tags.length < tagLimit) {
+        if (!tags.includes(tag) && tag.length) {
+          setBlog({ ...blog, tags: [...tags, tag] });
+        }
+      }else{
+        toast.error(`You can add max ${tagLimit} tags`)
+      }
+      e.target.value="";
+    }
+  };
 
   return (
     <AnimationWrapper>
-      <section className="w-screen min-h-screen grid items-center md:Grid-cols-2 py-16 lg:gap-4">
+      <section className="w-screen min-h-screen grid items-center lg:grid-cols-2 py-16 lg:gap-4">
         <Toaster />
         <button
           className="w-12 h-12 absolute right-[5vw] z-10 top-[5%] lg:top-[10%]"
@@ -86,9 +102,17 @@ const PublishForm = () => {
               type="text"
               placeholder="Topics"
               className="sticky input-box bg-white top-0 left-0 pl-4 mb-3 focus:bg-white"
+              onKeyDown={handleKeyDown}
             />
-            <Tag tag={tags}/>
+            {tags.map((tag, i) => (
+              <Tag tag={tag} key={i} tagIndex={i}/>
+            ))}
+           
           </div>
+          <p className="mt-1 mb-4 text=dark-grey text-right">{tagLimit - tags.length} Tags Left</p>
+          <button className="btn-dark px-8">
+            Publish
+          </button>
         </div>
       </section>
     </AnimationWrapper>

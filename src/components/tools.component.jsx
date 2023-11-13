@@ -23,12 +23,12 @@ export const tools = {
     class: Image,
     config: {
       uploader: {
-        uploadByFile: async (file) => {
-          try {
+        uploadByFile: (file) => {
+          return new Promise((resolve, reject) => {
             const formData = new FormData();
             formData.append("file", file);
-
-            const response = await axios.post(
+        
+            axios.post(
               "http://localhost:3000/api/upload",
               formData,
               {
@@ -36,17 +36,24 @@ export const tools = {
                   "Content-Type": "multipart/form-data",
                 },
               }
-            );
-
-            return {
-              success: 1,
-              file: {
-                url: response.data.imageUrl,
-              },
-            };
-          } catch (error) {
-            console.error("Error uploading image:", error);
-          }
+            )
+            .then(response => {
+              resolve({
+                success: 1,
+                file: {
+                  url: response.data.imageUrl,
+                },
+              });
+            })
+            .catch(error => {
+              console.error("Error uploading image:", error);
+              reject(error);
+            });
+          });
+        },
+        // Add the following rendered hook
+        rendered: function() {
+          console.warn('Rendered hook is triggered!');
         },
       },
     },

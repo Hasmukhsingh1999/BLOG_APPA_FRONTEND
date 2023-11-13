@@ -19,13 +19,31 @@ const BlogEditorComponent = () => {
   } = useContext(EditorContext);
 
   useEffect(() => {
-    let editor = new EditorJS({
-      holderId:"textEditor",
-      data:"",
-      tools:tools,
-      placeholder:"Embark on a captivating journey through our tale of wonder and intrigue."
-    })
-  }, []);
+    const editor = new EditorJS({
+      holder: 'textEditor',
+      data: '',
+      tools: tools,
+      placeholder: 'Embark on a captivating journey through our tale of wonder and intrigue.',
+
+      on: {
+        rendered: () => {
+          console.warn('Rendered hook is triggered!');
+        },
+      },
+    });
+
+   
+    return () => {
+      editor.isReady
+        .then(() => {
+          return editor.destroy();
+        })
+        .catch((error) => {
+          console.error('Editor destroy error', error);
+        });
+    };
+  }, []); 
+
   const handleBannerUpload = async (event) => {
     const file = event.target.files[0];
 

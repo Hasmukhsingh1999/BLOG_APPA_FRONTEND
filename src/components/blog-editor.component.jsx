@@ -18,6 +18,7 @@ const BlogEditorComponent = () => {
     setBlog,
     textEditor,
     setTextEditor,
+    setEditorState
   } = useContext(EditorContext);
 
   useEffect(() => {
@@ -79,7 +80,24 @@ const BlogEditorComponent = () => {
 
   const handlePublishEvent = () => {
     if (!banner.length) {
-      return toast.error("Uplad a blog Banner to publish it!");
+      return toast.error("Please upload a blog banner before publishing.");
+    }
+    if (!title.length) {
+      return toast.error("Please write a blog banner before publishing.");
+    }
+    if(textEditor.isReady){
+      textEditor.save().then(data=>{
+        if(data.blocks.length){
+          setBlog({...blog,content:data});
+          setEditorState("publish")
+        }
+        else{
+          return toast.error("Please provide something to the field before publishing.")
+        }
+      })
+      .catch((err)=>{
+        console.log(err)
+      })
     }
   };
 

@@ -4,8 +4,10 @@ import AnimationWrapper from "../common/page-animation";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import { useContext } from "react";
 import { EditorContext } from "../pages/editor.page";
+import Tag from "./tags.component";
 
 const PublishForm = () => {
+  const characterLimit = 200;
   let {
     setEditorState,
     blog: { banner, title, tags, des },
@@ -20,11 +22,22 @@ const PublishForm = () => {
     let input = e.target;
     setBlog({ ...blog, title: input.value });
   };
+
+  const handleBlogTextareaChange = (e) => {
+    let input = e.target;
+    setBlog({ ...blog, des: input.value });
+  };
+
+  const handleTitleKeyDown = (e) => {
+    if (e.keyCode === 13) {
+      e.preventDefault();
+    }
+  };
+
   return (
     <AnimationWrapper>
-      <section className="w-screen min-h-screen grid items-center lg:Grid-cols-2 py-16 lg:gap-4">
+      <section className="w-screen min-h-screen grid items-center md:Grid-cols-2 py-16 lg:gap-4">
         <Toaster />
-
         <button
           className="w-12 h-12 absolute right-[5vw] z-10 top-[5%] lg:top-[10%]"
           onClick={handleCloseEvent}
@@ -56,12 +69,26 @@ const PublishForm = () => {
           <p className="text-dark-grey mb-2 mt-9">
             Description about your Blog.
           </p>
-          <input
-            type="text"
-            placeholder="Blog Title"
-            defaultValue={title}
-            className="input-box pl-4"
-          />
+          <textarea
+            onKeyDown={handleTitleKeyDown}
+            maxLength={characterLimit}
+            defaultValue={des}
+            className="h-40 resize-none leading-7 input-box pl-4"
+            onChange={handleBlogTextareaChange}
+          ></textarea>
+          <p className="mt-1 text-dark-grey text-sm text-right">
+            {characterLimit - des.length} characters left
+          </p>
+          <p>Topics - (Help in searching and ranking your blog Post)</p>
+
+          <div className="relative input-box pl-2 py-2 pb-4">
+            <input
+              type="text"
+              placeholder="Topics"
+              className="sticky input-box bg-white top-0 left-0 pl-4 mb-3 focus:bg-white"
+            />
+            <Tag tag={tags}/>
+          </div>
         </div>
       </section>
     </AnimationWrapper>

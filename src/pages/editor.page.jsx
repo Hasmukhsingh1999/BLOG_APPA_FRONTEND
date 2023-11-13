@@ -20,13 +20,15 @@ const EditorPage = () => {
 
   const [editorState, setEditorState] = useState("editor");
 
+
+  const [textEditor,setTextEditor] = useState({isReady:false});
   const {
     userAuth: { access_token },
   } = useContext(UserContext);
 
   return (
     <EditorContext.Provider
-      value={{ blog, setBlog, editorState, setEditorState }}
+      value={{ blog, setBlog, editorState, setEditorState,textEditor,setTextEditor }}
     >
       {access_token === null ? (
         <Navigate to="/signin" />

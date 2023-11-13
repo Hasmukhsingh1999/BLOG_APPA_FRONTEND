@@ -6,7 +6,7 @@ import { useContext, useDebugValue, useEffect, useState } from "react";
 import axios from "axios";
 import blogImg from "../imgs/banner.jpg";
 import { EditorContext } from "../pages/editor.page";
-import EditorJS from '@editorjs/editorjs'
+import EditorJS from "@editorjs/editorjs";
 import { tools } from "./tools.component";
 
 const BlogEditorComponent = () => {
@@ -16,33 +16,21 @@ const BlogEditorComponent = () => {
     blog,
     blog: { title, banner, content, tags, des },
     setBlog,
+    textEditor,
+    setTextEditor,
   } = useContext(EditorContext);
 
   useEffect(() => {
-    const editor = new EditorJS({
-      holder: 'textEditor',
-      data: '',
-      tools: tools,
-      placeholder: 'Embark on a captivating journey through our tale of wonder and intrigue.',
-
-      on: {
-        rendered: () => {
-          console.warn('Rendered hook is triggered!');
-        },
-      },
-    });
-
-   
-    return () => {
-      editor.isReady
-        .then(() => {
-          return editor.destroy();
-        })
-        .catch((error) => {
-          console.error('Editor destroy error', error);
-        });
-    };
-  }, []); 
+    setTextEditor(
+      new EditorJS({
+        holder: "textEditor",
+        data: "",
+        tools: tools,
+        placeholder:
+          "Embark on a captivating journey through our tale of wonder and intrigue.",
+      })
+    );
+  }, []);
 
   const handleBannerUpload = async (event) => {
     const file = event.target.files[0];
@@ -89,6 +77,12 @@ const BlogEditorComponent = () => {
     setBlog({ ...blog, title: input.value });
   };
 
+  const handlePublishEvent = () => {
+    if (!banner.length) {
+      return toast.error("Uplad a blog Banner to publish it!");
+    }
+  };
+
   return (
     <>
       <nav className="navbar">
@@ -99,7 +93,9 @@ const BlogEditorComponent = () => {
           {title ?? "New Blog"}
         </p>
         <div className="flex gap-4 ml-auto ">
-          <button className="btn-dark py-2">Publish</button>
+          <button className="btn-dark py-2" onClick={handlePublishEvent}>
+            Publish
+          </button>
           <button className="btn-light py-2">Save Draft</button>
         </div>
       </nav>

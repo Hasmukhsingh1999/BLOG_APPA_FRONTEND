@@ -8,16 +8,18 @@ import { EditorContext } from "../pages/editor.page";
 const PublishForm = () => {
   let {
     setEditorState,
-    blog: { banner, title, tags, des },setBlog,blog
+    blog: { banner, title, tags, des },
+    setBlog,
+    blog,
   } = useContext(EditorContext);
   const handleCloseEvent = () => {
     setEditorState("editor");
   };
 
-  const handleBlogTitleChange= (e)=>{
+  const handleBlogTitleChange = (e) => {
     let input = e.target;
-    setBlog()
-  }
+    setBlog({ ...blog, title: input.value });
+  };
   return (
     <AnimationWrapper>
       <section className="w-screen min-h-screen grid items-center lg:Grid-cols-2 py-16 lg:gap-4">

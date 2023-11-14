@@ -35,7 +35,6 @@ const PublishForm = () => {
     }
   };
   const handleKeyDown = (e) => {
-   
     if (e.keyCode === 13 || e.keyCode === 188) {
       e.preventDefault();
       let tag = e.target.value;
@@ -43,13 +42,36 @@ const PublishForm = () => {
         if (!tags.includes(tag) && tag.length) {
           setBlog({ ...blog, tags: [...tags, tag] });
         }
-      }else{
-        toast.error(`You can add max ${tagLimit} tags`)
+      } else {
+        toast.error(`You can add max ${tagLimit} tags`);
       }
-      e.target.value="";
+      e.target.value = "";
     }
   };
 
+  const publishBlog = (e) => {
+    if (!title.length) {
+      return toast.error("You must provide a title to publish the blog");
+    }
+    if (!des.length || des.length > 200) {
+      return toast.error(
+        "You must provide a blog description under 200 characters."
+      );
+    }
+
+    if (!banner.length) {
+      return toast.error("You must provide a blog banner to publish it");
+    }
+    // if (!content.blocks.length) {
+    //   return toast.error("There must be some blog content to publish it.");
+    // }
+
+    if (!tags.length || tags.length > 10) {
+      return toast.error(
+        "Provide tags in order to publish the blog, Maximum 10"
+      );
+    }
+  };
   return (
     <AnimationWrapper>
       <section className="w-screen min-h-screen grid items-center lg:grid-cols-2 py-16 lg:gap-4">
@@ -105,12 +127,13 @@ const PublishForm = () => {
               onKeyDown={handleKeyDown}
             />
             {tags.map((tag, i) => (
-              <Tag tag={tag} key={i} tagIndex={i}/>
+              <Tag tag={tag} key={i} tagIndex={i} />
             ))}
-           
           </div>
-          <p className="mt-1 mb-4 text=dark-grey text-right">{tagLimit - tags.length} Tags Left</p>
-          <button className="btn-dark px-8">
+          <p className="mt-1 mb-4 text=dark-grey text-right">
+            {tagLimit - tags.length} Tags Left
+          </p>
+          <button className="btn-dark px-8" onClick={publishBlog}>
             Publish
           </button>
         </div>

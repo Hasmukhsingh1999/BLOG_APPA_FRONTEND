@@ -1,24 +1,28 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import LOGO from "../imgs/logo.png";
 import AnimationWrapper from "../common/page-animation";
 import toast, { Toaster } from "react-hot-toast";
-import { useContext, useDebugValue, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import blogImg from "../imgs/banner.jpg";
 import { EditorContext } from "../pages/editor.page";
 import EditorJS from "@editorjs/editorjs";
 import { tools } from "./tools.component";
+import { UserContext } from "../App";
 
 const BlogEditorComponent = () => {
   const [bannerUrl, setBannerUrl] = useState("");
-
+  const {
+    userAuth: { access_token },
+  } = useContext(UserContext);
+  let navigate = useNavigate();
   let {
     blog,
     blog: { title, banner, content, tags, des },
     setBlog,
     textEditor,
     setTextEditor,
-    setEditorState
+    setEditorState,
   } = useContext(EditorContext);
 
   useEffect(() => {
@@ -85,19 +89,66 @@ const BlogEditorComponent = () => {
     if (!title.length) {
       return toast.error("Please write a blog banner before publishing.");
     }
-    if(textEditor.isReady){
-      textEditor.save().then(data=>{
-        if(data.blocks.length){
-          setBlog({...blog,content:data});
-          setEditorState("publish")
-        }
-        else{
-          return toast.error("Please provide something to the field before publishing.")
-        }
-      })
-      .catch((err)=>{
-        console.log(err)
-      })
+    if (textEditor.isReady) {
+      textEditor
+        .save()
+        .then((data) => {
+          if (data.blocks.length) {
+            setBlog({ ...blog, content: data });
+            setEditorState("publish");
+          } else {
+            return toast.error(
+              "Please provide something to the field before publishing."
+            );
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  };
+
+  const handleSaveDraft = (e) => {
+    if (e.target.className.includes("disable")) {
+      return;
+    }
+    if (!title.length) {
+      return toast.error("You must provide a title to publish the blog");
+    }
+
+    let loadingToast = toast.loading("Saved Draft");
+    e.target.classList.add("disable");
+    if (textEditor.isReady) {
+      textEditor.save().then((content) => {
+        let blogObj = {
+          title,
+          banner,
+          des,
+          content,
+          tags,
+          draft: true,
+        };
+
+        axios
+          .post(import.meta.env.VITE_SERVER_DOMAIN + "/create-blog", blogObj, {
+            headers: {
+              Authorization: `Bearer ${access_token}`,
+            },
+          })
+          .then(() => {
+            e.target.classList.remove("disable");
+            toast.dismiss(loadingToast);
+            toast.success("Saved");
+            setTimeout(() => {
+              navigate("/");
+            }, 500);
+          })
+          .catch(({ response }) => {
+            e.target.classList.remove("disable");
+            toast.dismiss(loadingToast);
+            return response.error(response.data.error);
+          });
+      });
     }
   };
 
@@ -114,7 +165,9 @@ const BlogEditorComponent = () => {
           <button className="btn-dark py-2" onClick={handlePublishEvent}>
             Publish
           </button>
-          <button className="btn-light py-2">Save Draft</button>
+          <button className="btn-light py-2" onClick={handleSaveDraft}>
+            Save Draft
+          </button>
         </div>
       </nav>
       <Toaster />

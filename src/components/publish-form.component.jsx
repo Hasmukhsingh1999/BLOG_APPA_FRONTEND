@@ -5,13 +5,20 @@ import { AiOutlineCloseCircle } from "react-icons/ai";
 import { useContext } from "react";
 import { EditorContext } from "../pages/editor.page";
 import Tag from "./tags.component";
+import axios from "axios";
+import { UserContext } from "../App";
+import { useNavigate } from "react-router-dom";
 
 const PublishForm = () => {
+  let {
+    userAuth: { access_token },
+  } = useContext(UserContext);
+  let navigate = useNavigate();
   const characterLimit = 200;
   let tagLimit = 10;
   let {
     setEditorState,
-    blog: { banner, title, tags, des },
+    blog: { banner, title, tags, des, content },
     setBlog,
     blog,
   } = useContext(EditorContext);
@@ -50,12 +57,15 @@ const PublishForm = () => {
   };
 
   const publishBlog = (e) => {
+    if (e.target.className.includes("disable")) {
+      return;
+    }
     if (!title.length) {
       return toast.error("You must provide a title to publish the blog");
     }
-    if (!des.length || des.length > 200) {
+    if (!des.length || des.length > characterLimit) {
       return toast.error(
-        "You must provide a blog description under 200 characters."
+        `You must provide a blog description under ${characterLimit} characters.`
       );
     }
 
@@ -66,11 +76,42 @@ const PublishForm = () => {
     //   return toast.error("There must be some blog content to publish it.");
     // }
 
-    if (!tags.length || tags.length > 10) {
+    if (!tags.length || tags.length > tagLimit) {
       return toast.error(
         "Provide tags in order to publish the blog, Maximum 10"
       );
     }
+
+    let loadingToast = toast.loading("Publishing");
+    e.target.classList.add("disable");
+
+    let blogObj = {
+      title,
+      banner,
+      des,
+      content,
+      tags,
+      draft: false,
+    };
+    axios
+      .post(import.meta.env.VITE_SERVER_DOMAIN + "/create-blog", blogObj, {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+      })
+      .then(() => {
+        e.target.classList.remove("disable");
+        toast.dismiss(loadingToast);
+        toast.success("Published");
+        setTimeout(() => {
+          navigate("/");
+        }, 500);
+      })
+      .catch(({ response }) => {
+        e.target.classList.remove("disable");
+        toast.dismiss(loadingToast);
+        return response.error(response.data.error);
+      });
   };
   return (
     <AnimationWrapper>
